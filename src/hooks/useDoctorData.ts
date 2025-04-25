@@ -125,11 +125,12 @@ export function useDoctorData() {
       .sort((a, b) => {
         // Sort by selected option
         if (sortBy === "fees") {
-          return a.fees - b.fees;
+          return a.fees - b.fees; // Low to high
         } else if (sortBy === "experience") {
-          return b.experience - a.experience;
+          return b.experience - a.experience; // High to low
         }
-        return 0;
+        // Default sort by name if no sort option selected
+        return a.name.localeCompare(b.name);
       });
   }, [doctors, searchQuery, consultationType, selectedSpecialties, sortBy]);
 

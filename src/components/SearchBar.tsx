@@ -1,7 +1,8 @@
 
 import { useState, useRef, useEffect } from "react";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Doctor } from "@/types/doctor";
 
 interface SearchBarProps {
@@ -21,7 +22,6 @@ export function SearchBar({ searchQuery, onSearch, getAutocompleteSuggestions }:
     setInputValue(searchQuery);
   }, [searchQuery]);
 
-  // Update suggestions when input changes
   useEffect(() => {
     if (inputValue.trim()) {
       const newSuggestions = getAutocompleteSuggestions(inputValue);
@@ -33,7 +33,6 @@ export function SearchBar({ searchQuery, onSearch, getAutocompleteSuggestions }:
     }
   }, [inputValue, getAutocompleteSuggestions]);
 
-  // Close suggestions on click outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -69,26 +68,47 @@ export function SearchBar({ searchQuery, onSearch, getAutocompleteSuggestions }:
     setIsOpen(false);
   };
 
+  const handleClearSearch = () => {
+    setInputValue("");
+    onSearch("");
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   return (
     <div className="relative w-full max-w-3xl mx-auto mb-6">
-      <div className="relative">
-        <Input
-          ref={inputRef}
-          type="text"
-          placeholder="Search doctors by name..."
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          className="pl-10 h-12 text-lg"
-          data-testid="autocomplete-input"
-        />
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+      <div className="relative flex items-center">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <Input
+            ref={inputRef}
+            type="text"
+            placeholder="Search doctors by name..."
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            className="pl-10 pr-10 h-12 text-lg"
+            data-testid="autocomplete-input"
+          />
+          {inputValue && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 hover:bg-gray-100"
+              onClick={handleClearSearch}
+              aria-label="Clear search"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
       </div>
 
       {isOpen && suggestions.length > 0 && (
         <div
           ref={suggestionsRef}
-          className="absolute z-10 w-full mt-1 bg-white shadow-lg rounded-md border border-gray-200 overflow-hidden"
+          className="absolute z-50 w-full mt-1 bg-white shadow-lg rounded-md border border-gray-200 overflow-hidden"
         >
           {suggestions.map((suggestion) => (
             <div
