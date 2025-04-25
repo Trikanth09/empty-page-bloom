@@ -4,10 +4,13 @@ export interface Doctor {
   name: string;
   specialties: string[];
   qualifications: string;
-  experience: number;
+  experience: number; 
   fees: number;
   location: string;
   clinicName: string;
   consultationType: string[];
   avatarUrl?: string;
+  name_initials?: string;
+  photo?: string;
 }
+

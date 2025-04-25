@@ -9,7 +9,6 @@ interface DoctorCardProps {
 }
 
 export function DoctorCard({ doctor }: DoctorCardProps) {
-  // Generate initials for avatar fallback
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -19,17 +18,24 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
       .substring(0, 2);
   };
 
+  const specialtiesToShow = doctor.specialties.length > 0 ? doctor.specialties : ['General Physician'];
+  const avatarUrl = doctor.avatarUrl || doctor.photo;
+
   return (
     <Card className="mb-4 overflow-hidden" data-testid="doctor-card">
       <CardContent className="p-6">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-shrink-0">
-            <Avatar className="h-20 w-20">
-              {doctor.avatarUrl && (
-                <AvatarImage src={doctor.avatarUrl} alt={doctor.name} />
+            <Avatar className="h-20 w-20" aria-label={`${doctor.name}'s profile picture`}>
+              {avatarUrl && (
+                <AvatarImage 
+                  src={avatarUrl} 
+                  alt={doctor.name}
+                  className="object-cover"
+                />
               )}
               <AvatarFallback className="text-lg bg-blue-100 text-blue-800">
-                {getInitials(doctor.name)}
+                {doctor.name_initials || getInitials(doctor.name)}
               </AvatarFallback>
             </Avatar>
           </div>
@@ -38,10 +44,10 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
               <div>
                 <h3 className="text-xl font-bold" data-testid="doctor-name">
-                  Dr. {doctor.name}
+                  {doctor.name}
                 </h3>
                 <p className="text-gray-600" data-testid="doctor-specialty">
-                  {doctor.specialties.join(", ")}
+                  {specialtiesToShow.join(", ")}
                 </p>
                 <p className="text-gray-500">{doctor.qualifications}</p>
               </div>
@@ -88,3 +94,4 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
     </Card>
   );
 }
+
