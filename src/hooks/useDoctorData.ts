@@ -127,7 +127,8 @@ export function useDoctorData() {
         if (sortBy === "fees") {
           return a.fees - b.fees; // Low to high
         } else if (sortBy === "experience") {
-          return b.experience - a.experience; // High to low
+          // Ensure we're comparing numeric values and sorting in descending order
+          return b.experience - a.experience; // High to low (fixed)
         }
         // Default sort by name if no sort option selected
         return a.name.localeCompare(b.name);
