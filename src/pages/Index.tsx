@@ -4,7 +4,9 @@ import { useSearchParams } from "react-router-dom";
 import { SearchBar } from "@/components/SearchBar";
 import { FilterPanel } from "@/components/FilterPanel";
 import { DoctorCard } from "@/components/DoctorCard";
+import { DoctorCardSkeleton } from "@/components/DoctorCardSkeleton";
 import { useDoctorData } from "@/hooks/useDoctorData";
+import { Header } from "@/components/Header";
 
 const Index = () => {
   const {
@@ -38,7 +40,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-50">
-      <header className="bg-blue-700 py-6">
+      <Header />
+      <div className="bg-blue-700 py-6">
         <div className="container mx-auto px-4">
           <SearchBar 
             searchQuery={searchQuery}
@@ -46,7 +49,7 @@ const Index = () => {
             getAutocompleteSuggestions={getAutocompleteSuggestions}
           />
         </div>
-      </header>
+      </div>
       
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -64,7 +67,12 @@ const Index = () => {
           
           <div className="md:col-span-2 lg:col-span-3">
             {loading ? (
-              <div className="text-center py-8">Loading doctors...</div>
+              <div className="space-y-4">
+                <h2 className="text-xl font-bold mb-4">Loading doctors...</h2>
+                {[...Array(3)].map((_, index) => (
+                  <DoctorCardSkeleton key={index} />
+                ))}
+              </div>
             ) : error ? (
               <div className="text-center py-8 text-red-500">{error}</div>
             ) : doctors.length === 0 ? (
@@ -73,7 +81,7 @@ const Index = () => {
               </div>
             ) : (
               <div>
-                <h2 className="text-xl font-bold mb-4">Found {doctors.length} Doctors</h2>
+                <h2 className="text-xl font-bold mb-4 text-blue-900">Found {doctors.length} Doctors</h2>
                 <div className="space-y-4">
                   {doctors.map((doctor) => (
                     <DoctorCard key={doctor.id} doctor={doctor} />

@@ -22,11 +22,14 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
   const avatarUrl = doctor.avatarUrl || doctor.photo;
 
   return (
-    <Card className="mb-4 overflow-hidden" data-testid="doctor-card">
+    <Card 
+      className="mb-4 overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group" 
+      data-testid="doctor-card"
+    >
       <CardContent className="p-6">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-shrink-0">
-            <Avatar className="h-20 w-20" aria-label={`${doctor.name}'s profile picture`}>
+            <Avatar className="h-20 w-20 transition-transform duration-300 group-hover:scale-105" aria-label={`${doctor.name}'s profile picture`}>
               {avatarUrl && (
                 <AvatarImage 
                   src={avatarUrl} 
@@ -43,7 +46,7 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
           <div className="flex-grow space-y-2">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
               <div>
-                <h3 className="text-xl font-bold" data-testid="doctor-name">
+                <h3 className="text-xl font-bold text-blue-900 group-hover:text-blue-700 transition-colors duration-300" data-testid="doctor-name">
                   {doctor.name}
                 </h3>
                 <p className="text-gray-600" data-testid="doctor-specialty">
@@ -53,7 +56,7 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
               </div>
               
               <div className="mt-2 sm:mt-0 text-right">
-                <p className="text-lg font-semibold" data-testid="doctor-fee">
+                <p className="text-lg font-semibold text-blue-700" data-testid="doctor-fee">
                   ₹{doctor.fees}
                 </p>
               </div>
@@ -73,10 +76,10 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
                 {doctor.consultationType.map((type) => (
                   <span
                     key={type}
-                    className={`text-xs px-2 py-1 rounded-full ${
+                    className={`text-xs px-2 py-1 rounded-full transition-colors duration-300 ${
                       type === "Video Consult"
-                        ? "bg-blue-100 text-blue-700"
-                        : "bg-green-100 text-green-700"
+                        ? "bg-blue-100 text-blue-700 group-hover:bg-blue-200"
+                        : "bg-green-100 text-green-700 group-hover:bg-green-200"
                     }`}
                   >
                     {type}
@@ -88,10 +91,11 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
         </div>
       </CardContent>
       
-      <CardFooter className="bg-gray-50 p-4">
-        <Button className="w-full md:w-auto ml-auto">Book Appointment</Button>
+      <CardFooter className="bg-gray-50 p-4 transition-colors duration-300 group-hover:bg-gray-100">
+        <Button className="w-full md:w-auto ml-auto transition-all duration-300 hover:scale-105">
+          Book Appointment
+        </Button>
       </CardFooter>
     </Card>
   );
 }
-
